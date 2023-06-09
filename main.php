@@ -84,7 +84,7 @@
                         <div class="row">
                             <?php
                                 $mysqli = conectar();
-                                $maps_user=$mysqli->query("SELECT idData, name, position, exercise, file, img3d, maps FROM data WHERE userKey=".$idUser);
+                                $maps_user=$mysqli->query("SELECT idData, name, create_date, exercise, file, img3d, maps FROM data WHERE userKey=".$idUser);
                                 
                                 $numRows = $maps_user->num_rows;
 
@@ -97,30 +97,36 @@
                                         $data = $row['maps'];
                                         $name = $row['name'];
                                         $file = $row['file'];
-                                        $img = $row['img3d'];
                                         $idData = $row['idData'];
+                                        $date = $row['create_date'];
 
                                         // Determine the value of $prueba based on $exercise
                                         $exercise = $row['exercise'];
                                         if ($exercise == 1) {
                                             $prueba = "Peg Transfer";
+                                            $iconClass = "fa fa-exchange";
                                         } elseif ($exercise == 2) {
                                             $prueba = "Pattern Cutting";
+                                            $iconClass = "fa fa-cut";
                                         } elseif ($exercise == 3) {
                                             $prueba = "Intracorporeal Knot Suture";
+                                            $iconClass = "fas fa-link";
                                         } else {
                                             $prueba = "Unknown Exercise";
+                                            $iconClass = "fa fa-question";
                                         }
-                                        
-                                        // Generate Bootstrap card HTML for each row
-                                        echo '<div class="card" style="max-width: 300px;">'; // Adjust the max-width value as per your requirement
-                                        echo '<div class="card-body">';
-                                        echo '<h5 class="card-title">' . $name . '</h5>';
-                                        echo '<h6 class="card-subtitle mb-2 text-muted">' . $prueba . '</h6>';
-                                        //echo '<p class="card-text">' . $data . '</p>';
-                                        echo '<a href="results.php?idData=' . urlencode($idData) . '&idUser='.urlencode($idUser).'" class="btn btn-primary">Results</a>'; // Add your button markup with the link to results.php and the file parameter
-                                        echo '</div>';
-                                        echo '</div>';
+
+                                        echo '
+                                        <div class="card" style="max-width: 25%; margin-bottom: 2vw;">
+                                            <div class="card-body">
+                                                <h5 class="card-title">' . $name . '</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">' . $prueba . '</h6>
+                                                <p class="card-text">' . $date . '</p>
+                                                <i class="' . $iconClass . '"></i>
+                                                <a href="results.php?idData=' . urlencode($idData) . '&idUser=' . urlencode($idUser) . '" class="btn btn-primary">Results</a>
+                                            </div>
+                                        </div>
+                                        ';
 
                                         $counter++; // Increment the counter
                                     }
